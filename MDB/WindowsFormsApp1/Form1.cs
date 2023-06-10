@@ -557,11 +557,13 @@ namespace MDB
                     
                 }
             }
+        }
 
-
-            else if (e.Button == MouseButtons.Left)
-            {
-                if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+        public void TableMainGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            CustomDataGridView senderDGV = sender as CustomDataGridView;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
 
                 string tableDir = senderDGV.Name;
@@ -607,24 +609,24 @@ namespace MDB
 
                     if (isConstructed)
                     {
-
                         refrencedTableKey = colTag[DatabaseFunct.RefrenceColumnKeyExt];
                     }
                     else
                     {
-                        refrencedTableKey = DatabaseFunct.currentData[tableKey][senderDGV.Columns[e.ColumnIndex].Name + DatabaseFunct.RefrenceColumnKeyExt];
+                        refrencedTableKey =
+                            DatabaseFunct.currentData[tableKey][
+                                senderDGV.Columns[e.ColumnIndex].Name + DatabaseFunct.RefrenceColumnKeyExt];
                     }
 
                     //make sure table still exists and that table still has a primary key col
                     if (!DatabaseFunct.currentData.ContainsKey(refrencedTableKey))
                     {
-
                         error += "The table being refrenced, \"" + refrencedTableKey + "\" no longer exists. ";
                     }
                     else if (!DatabaseFunct.currentData[refrencedTableKey].ContainsValue("Primary Key"))
                     {
-                        error += "The table being refrenced, \"" + refrencedTableKey + "\", no longer contains a primary key columnn, add one or delete this column.";
-
+                        error += "The table being refrenced, \"" + refrencedTableKey +
+                                 "\", no longer contains a primary key columnn, add one or delete this column.";
                     }
 
                     if (error == "")
@@ -636,7 +638,6 @@ namespace MDB
                         //find primary key column name
                         foreach (KeyValuePair<string, dynamic> KV in refrencedTable)
                         {
-
                             if (KV.Value is string && KV.Value == "Primary Key")
                             {
                                 primaryKeyCol = KV.Key;
@@ -647,13 +648,13 @@ namespace MDB
                         {
                             List<string> primaryKeys = new List<string>();
                             primaryKeys.Add("");
-                            foreach (KeyValuePair<int, Dictionary<string, dynamic>> entry in refrencedTable[DatabaseFunct.RowEntryRefrence])
+                            foreach (KeyValuePair<int, Dictionary<string, dynamic>> entry in refrencedTable[
+                                         DatabaseFunct.RowEntryRefrence])
                             {
                                 if (entry.Value[primaryKeyCol] != null)
                                 {
                                     primaryKeys.Add(entry.Value[primaryKeyCol]);
                                 }
-
                             }
 
                             //clear value if invalid
@@ -664,19 +665,13 @@ namespace MDB
 
                             var prevSel = senderDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
 
-                            DataGridViewComboBoxCell cell = senderDGV.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewComboBoxCell;
+                            DataGridViewComboBoxCell cell =
+                                senderDGV.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewComboBoxCell;
 
 
                             cell.Items.Clear();
                             cell.Items.AddRange(primaryKeys.ToArray());
                             cell.Value = prevSel;
-
-
-
-
-
-
-
                         }
                     }
                     else
@@ -684,7 +679,6 @@ namespace MDB
                         senderDGV.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = null;
                         System.Windows.Forms.MessageBox.Show(error);
                     }
-
                 }
                 else if (colType == "Parent Subtable Foreign Key Refrence")
                 {
@@ -867,16 +861,19 @@ namespace MDB
 
 
                 // set DataGridViewComboBoxCell dropdown width to fit longest string in items
-                
+
                 if (colType == "Foreign Key Refrence" || colType == "Parent Subtable Foreign Key Refrence")
                 {
                     //force cell to redraw
-                    DataGridViewComboBoxCell cell = senderDGV.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewComboBoxCell;
+                    DataGridViewComboBoxCell cell =
+                        senderDGV.Rows[e.RowIndex].Cells[e.ColumnIndex] as DataGridViewComboBoxCell;
 
                     int width = cell.DropDownWidth;
                     Font font = senderDGV.DefaultCellStyle.Font;
                     //add room for scrollbar if it appears
-                    int vertScrollBarWidth = (cell.Items.Count > cell.MaxDropDownItems) ? SystemInformation.VerticalScrollBarWidth : 0;
+                    int vertScrollBarWidth = (cell.Items.Count > cell.MaxDropDownItems)
+                        ? SystemInformation.VerticalScrollBarWidth
+                        : 0;
                     Graphics g = CreateGraphics();
 
                     //find widest string in items
@@ -886,23 +883,20 @@ namespace MDB
                         {
                             int stringWidth = (int)g.MeasureString(s, font).Width;
 
-                            int newWidth =  stringWidth + vertScrollBarWidth;
+                            int newWidth = stringWidth + vertScrollBarWidth;
 
                             if (width < newWidth)
                             {
                                 width = newWidth;
                             }
                         }
-                        
+
                     }
+
                     //set to width
                     cell.DropDownWidth = width;
-                    
+
                 }
-                
-
-            }
-
         }
 
         public void TableMainGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)

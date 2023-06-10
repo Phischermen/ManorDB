@@ -81,6 +81,7 @@ namespace MDB
                     if (!clickEventsRemovedFromTableMainGridView)
                     {
                         TableMainGridView.CellMouseDown -= new System.Windows.Forms.DataGridViewCellMouseEventHandler(Program.mainForm.TableMainGridView_CellMouseDown);
+                        TableMainGridView.CellEnter -= new System.Windows.Forms.DataGridViewCellEventHandler(Program.mainForm.TableMainGridView_CellEnter);
                         TableMainGridView.CellContentClick -= new System.Windows.Forms.DataGridViewCellEventHandler(Program.mainForm.TableMainGridView_CellContentClick);
                         clickEventsRemovedFromTableMainGridView = true;
                     }
@@ -104,6 +105,9 @@ namespace MDB
                     if (clickEventsRemovedFromTableMainGridView)
                     {
                         TableMainGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(Program.mainForm.TableMainGridView_CellMouseDown);
+                        TableMainGridView.CellEnter +=
+                            new System.Windows.Forms.DataGridViewCellEventHandler(Program.mainForm
+                                .TableMainGridView_CellEnter);
                         TableMainGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(Program.mainForm.TableMainGridView_CellContentClick);
                         clickEventsRemovedFromTableMainGridView = false;
                     }
