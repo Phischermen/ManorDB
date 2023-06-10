@@ -1492,6 +1492,11 @@ namespace MDB
         {
             InputOutput.ExportMDBFile();
         }
+        
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputOutput.ExportMDBFileAtSavePath();
+        }
 
         private void appendFileToolStripMenuItem_Click(object sender, EventArgs e)
         {

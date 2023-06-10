@@ -15,6 +15,9 @@ namespace MDB
 {
     public static class InputOutput
     {
+        // the path to save to by default
+        private static string savePath = "";
+        
         //the path that was previously selected
         public static string selectedPath = "";
 
@@ -27,9 +30,8 @@ namespace MDB
             if (DatabaseFunct.currentData.Count > 0)
             {
                 //convert currentData to json
-                string js = Newtonsoft.Json.JsonConvert.SerializeObject(DatabaseFunct.currentData);
-
-                Stream myStream;
+                var js = SerializeDatabase();
+                
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
                 saveFileDialog1.Filter = "mdb files (*.mdb)|*.mdb|All files (*.*)|*.*";
@@ -69,6 +71,24 @@ namespace MDB
 
 
 
+        }
+        
+        public static void ExportMDBFileAtSavePath()
+        {
+            var js = SerializeDatabase();
+            if (string.IsNullOrEmpty(savePath) == false)
+            {
+                File.WriteAllText(savePath, js);
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("no path selected!");
+            }
+        }
+        
+        private static string SerializeDatabase()
+        {
+            return  Newtonsoft.Json.JsonConvert.SerializeObject(DatabaseFunct.currentData, Formatting.Indented);
         }
 
         //open file with OpenFileDialog
@@ -346,6 +366,7 @@ namespace MDB
 
                 if (isReplace) //overriding with new currentData
                 {
+                    savePath = fileName;
                     defaultPath = fileName;
                     selectedPath = Path.GetDirectoryName(fileName);
 
@@ -482,9 +503,6 @@ namespace MDB
             DatabaseFunct.loadingTable = false;
 
         }
-
-
-
     }
 
 

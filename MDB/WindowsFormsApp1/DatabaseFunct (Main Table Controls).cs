@@ -44,9 +44,14 @@ namespace MDB
             //now add the controls asocciated with each type of table
 
             //subfunction for adding the mainTableMenuItem
-            void addItem(string MainTableFunctionsKey)
+            void addItem(string MainTableFunctionsKey, System.Windows.Forms.Keys shortcutKeys = System.Windows.Forms.Keys.None)
             {
                 MainTableToolStripMenuItem tableToolStripMenuItem = new MainTableToolStripMenuItem(MainTableFunctionsKey);
+                if (shortcutKeys != System.Windows.Forms.Keys.None)
+                {
+                    tableToolStripMenuItem.ShowShortcutKeys = true;
+                    tableToolStripMenuItem.ShortcutKeys = shortcutKeys;
+                }
                 Program.mainForm.menuStrip1.Items.Add(tableToolStripMenuItem);
                 mainTableMenuItems.Add(tableToolStripMenuItem);
             }
@@ -84,9 +89,9 @@ namespace MDB
                 }
                 else //if normal table
                 {
-                    addItem("Add Column");
+                    addItem("Add Column", Keys.Alt | Keys.C);
 
-                    addItem("Add Row");
+                    addItem("Add Row", Keys.Alt | Keys.R);
 
                     //enable the maintable editing functionality
                     Program.mainForm.TableMainGridView.ReadOnly = false;
